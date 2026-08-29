@@ -1,0 +1,16 @@
+services:
+  coreano:
+    build: .
+    container_name: tugboat-coreano
+    restart: unless-stopped
+    ports:
+      - "${PUERTO:-8080}:80"
+    environment:
+      ADMIN_USUARIO: "${ADMIN_USUARIO:-admin}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-admin123}"
+      ADMIN_NOMBRE: "${ADMIN_NOMBRE:-Administrador}"
+    volumes:
+      - datos_db:/var/www/html/data
+
+volumes:
+  datos_db:
