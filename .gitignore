@@ -1,0 +1,13 @@
+# Base de datos SQLite (se crea sola en tiempo de ejecución)
+app/data/
+
+# Entorno y herramientas
+*.log
+__pycache__/
+*.pyc
+
+# IDE / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
