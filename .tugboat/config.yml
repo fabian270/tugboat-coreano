@@ -1,0 +1,26 @@
+services:
+  apache:
+    image: tugboatqa/php:8.2-apache
+    default: true
+    symlink: false
+    environment:
+      ADMIN_USUARIO: admin
+      ADMIN_PASSWORD: admin123
+      ADMIN_NOMBRE: Administrador
+    commands:
+      init:
+        # Extensión PDO para SQLite (la BD se crea sola en el primer request)
+        - bash -c 'php -m | grep -q pdo_sqlite || docker-php-ext-install pdo_sqlite'
+        # Front controller: rutas limpias
+        - a2enmod rewrite
+        # Raíz web: app/public (PHP resuelve los symlinks, así __DIR__/../config.php funciona)
+        - ln -snf "${TUGBOAT_ROOT}/app/public" "${DOCROOT}"
+        # VHOST con AllowOverride All y ServerName para que funcione el .htaccess
+        - cp "${TUGBOAT_ROOT}/docker/apache-vhost.conf" /etc/apache2/sites-available/000-default.conf
+        # Persistir DOCROOT para que Apache expanda ${DOCROOT} del vhost al reiniciar
+        - printf 'export DOCROOT=%s\n' "${DOCROOT}" >> /etc/apache2/envvars
+        # Directorio de datos SQLite escribible por Apache
+        - mkdir -p "${TUGBOAT_ROOT}/app/data"
+        - chown -R www-data:www-data "${TUGBOAT_ROOT}/app/data"
+        # Aplicar la configuración de Apache
+        - service apache2 restart || true
