@@ -1,0 +1,240 @@
+:root {
+    --altura-navbar: 56px;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+                 Arial, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Marca ---------- */
+
+.logo-hangul {
+    font-weight: 700;
+    line-height: 1;
+}
+
+.logo-grande {
+    width: 72px;
+    height: 72px;
+    border-radius: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--bs-primary), var(--bs-info));
+    color: #fff;
+}
+
+.pantalla-login {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+/* ---------- Estudio ---------- */
+
+.estudio {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100dvh - var(--altura-navbar) - 2rem);
+}
+
+#zona-tarjeta {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+}
+
+.flashcard {
+    position: relative;
+    display: block;
+    width: 90%;
+    width: min(620px, 100%);
+    max-width: 620px;
+    height: 320px;
+    height: min(55dvh, 420px);
+    min-height: 280px;
+    padding: 0;
+    border: 3px solid #8f9bb3;
+    background: var(--bs-secondary-bg);
+    border-radius: 1.5rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    touch-action: manipulation;
+    overflow: hidden;
+}
+
+[data-bs-theme="dark"] .flashcard {
+    border-color: #7d95c4;
+}
+
+.flashcard:focus-visible {
+    outline: 3px solid var(--bs-primary);
+    outline-offset: 4px;
+}
+
+.flip-inner {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.flip-cara {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    box-sizing: border-box;
+    transition: opacity 0.25s ease;
+}
+
+.cara-frente {
+    background: transparent;
+    opacity: 1;
+    z-index: 2;
+}
+
+.cara-dorso {
+    background: #ecf3fb;
+    border: 0;
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+[data-bs-theme="dark"] .cara-dorso {
+    background: #2b3a55;
+}
+
+.flashcard.girada .cara-frente {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.flashcard.girada .cara-dorso {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.flip-cara > span {
+    max-width: 100%;
+}
+
+.hangul {
+    font-size: 3.5rem;
+    font-size: clamp(2.5rem, 14vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    word-break: keep-all;
+}
+
+.romanizacion {
+    font-size: 1.25rem;
+    font-size: clamp(1rem, 4.5vw, 1.5rem);
+    font-style: italic;
+}
+
+.traduccion {
+    font-size: 1.6rem;
+    font-size: clamp(1.25rem, 6.5vw, 2.25rem);
+    font-weight: 600;
+}
+
+.ejemplo {
+    font-size: 1rem;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    color: var(--bs-body-color);
+    opacity: 0.8;
+}
+
+/* Botones táctiles grandes */
+
+.botonera {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.botonera .btn {
+    min-height: 60px;
+    font-size: 1.25rem;
+    border-radius: 0.9rem;
+    flex-basis: 0;
+}
+
+#zona-ver-respuesta .btn {
+    min-height: 60px;
+    font-size: 1.15rem;
+    border-radius: 0.9rem;
+    white-space: normal;
+}
+
+/* ---------- Cartillas (tarjetas) ---------- */
+
+.card-cartilla {
+    position: relative;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #adb5bd;
+    overflow: hidden;
+    box-shadow: 0 0.25rem 0.9rem rgba(0, 0, 0, 0.18);
+}
+
+[data-bs-theme="dark"] .card-cartilla {
+    border-color: #868e96;
+}
+
+.cinta-color {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+}
+
+/* ---------- Tablas con hangul ---------- */
+
+.hangul-tabla {
+    font-size: 1.15rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ---------- Botones de acción táctiles en general ---------- */
+
+.btn {
+    border-radius: 0.6rem;
+}
+
+.table .btn,
+.table-responsive .btn {
+    white-space: nowrap;
+}
+
+@media (pointer: coarse) {
+    .btn {
+        min-height: 44px;
+    }
+    .btn-sm {
+        min-height: 38px;
+    }
+}
