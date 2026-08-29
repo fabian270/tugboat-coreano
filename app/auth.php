@@ -39,7 +39,7 @@ function usuario_actual(): ?array
             $stmt = db()->prepare('SELECT * FROM usuarios WHERE id = ? LIMIT 1');
             $stmt->execute([$id]);
             $fila = $stmt->fetch();
-            if ($fila && (int) $fila['activo'] === 1) {
+            if ($fila && ((int) $fila['activo'] === 1 || (int) $fila['debe_cambiar_password'] === 1)) {
                 $usuario = $fila;
             } else {
                 unset($_SESSION['usuario_id']);
@@ -54,7 +54,11 @@ function login(string $nombre_usuario, string $password): bool
     $stmt = db()->prepare('SELECT * FROM usuarios WHERE usuario = ? LIMIT 1');
     $stmt->execute([$nombre_usuario]);
     $fila = $stmt->fetch();
-    if (!$fila || (int) $fila['activo'] !== 1 || !password_verify($password, $fila['password_hash'])) {
+    if (!$fila || !password_verify($password, $fila['password_hash'])) {
+        return false;
+    }
+    $pendiente = (int) ($fila['debe_cambiar_password'] ?? 0) === 1;
+    if ((int) $fila['activo'] !== 1 && !$pendiente) {
         return false;
     }
     session_regenerate_id(true);
@@ -72,11 +76,20 @@ function logout(): void
     session_destroy();
 }
 
+function requiere_cambio_password(): void
+{
+    $u = usuario_actual();
+    if ($u !== null && (int) $u['debe_cambiar_password'] === 1) {
+        redirigir('cambiar-contrasena');
+    }
+}
+
 function requiere_login(): void
 {
     if (usuario_actual() === null) {
         redirigir('login');
     }
+    requiere_cambio_password();
 }
 
 function requiere_admin(): void
@@ -85,6 +98,7 @@ function requiere_admin(): void
     if ($u === null || $u['rol'] !== 'admin') {
         redirigir('inicio');
     }
+    requiere_cambio_password();
 }
 
 function es_admin(): bool

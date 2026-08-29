@@ -20,6 +20,9 @@ switch ($ruta) {
     case 'logout':
         procesar_logout();
         break;
+    case 'cambiar-contrasena':
+        pag_cambiar_contrasena();
+        break;
     case 'inicio':
         pag_inicio();
         break;

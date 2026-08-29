@@ -72,7 +72,7 @@ inicio_pagina($titulo);
                         </select>
                     </div>
                     <div class="col-12 col-sm-6">
-                        <label class="form-label">Contraseña <span class="text-body-secondary">(vacía = se genera)</span></label>
+                        <label class="form-label">Contraseña provisional <span class="text-body-secondary">(vacía = se genera; el usuario deberá cambiarla)</span></label>
                         <input class="form-control" type="password" name="password" autocomplete="new-password">
                     </div>
                     <div class="col-12">
@@ -112,7 +112,9 @@ inicio_pagina($titulo);
                         <?php endif; ?>
                     </td>
                     <td>
-                        <?php if ((int) $u['activo'] === 1): ?>
+                        <?php if ((int) $u['debe_cambiar_password'] === 1): ?>
+                            <span class="badge text-bg-warning">Pendiente de cambio</span>
+                        <?php elseif ((int) $u['activo'] === 1): ?>
                             <span class="badge text-bg-success">Activo</span>
                         <?php else: ?>
                             <span class="badge text-bg-secondary">Inactivo</span>

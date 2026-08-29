@@ -21,14 +21,15 @@ function crear_esquema(): void
 {
     db()->exec(
         'CREATE TABLE IF NOT EXISTS usuarios (
-            id            INTEGER PRIMARY KEY AUTOINCREMENT,
-            nombre        TEXT NOT NULL,
-            usuario       TEXT NOT NULL UNIQUE,
-            password_hash TEXT NOT NULL,
-            rol           TEXT NOT NULL DEFAULT \'alumno\',
-            activo        INTEGER NOT NULL DEFAULT 1,
-            tema          TEXT NOT NULL DEFAULT \'oscuro\',
-            creado_en     TEXT NOT NULL DEFAULT (datetime(\'now\'))
+            id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre                TEXT NOT NULL,
+            usuario               TEXT NOT NULL UNIQUE,
+            password_hash         TEXT NOT NULL,
+            rol                   TEXT NOT NULL DEFAULT \'alumno\',
+            activo                INTEGER NOT NULL DEFAULT 1,
+            debe_cambiar_password INTEGER NOT NULL DEFAULT 0,
+            tema                  TEXT NOT NULL DEFAULT \'oscuro\',
+            creado_en             TEXT NOT NULL DEFAULT (datetime(\'now\'))
         );'
     );
     db()->exec(
@@ -68,9 +69,24 @@ function crear_esquema(): void
     );
 }
 
+function migrar_esquema(): void
+{
+    $col = null;
+    foreach (db()->query('PRAGMA table_info(usuarios)')->fetchAll() as $c) {
+        if ($c['name'] === 'debe_cambiar_password') {
+            $col = $c;
+            break;
+        }
+    }
+    if ($col === null) {
+        db()->exec('ALTER TABLE usuarios ADD COLUMN debe_cambiar_password INTEGER NOT NULL DEFAULT 0');
+    }
+}
+
 function verificar_instalacion(): void
 {
     crear_esquema();
+    migrar_esquema();
     sembrar_contenido_si_vacio();
     crear_admin_si_no_existe();
 }

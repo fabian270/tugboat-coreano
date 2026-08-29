@@ -42,12 +42,15 @@ function admin_crear_usuario(): void
         return;
     }
 
-    $stmt = db()->prepare('INSERT INTO usuarios (nombre, usuario, password_hash, rol) VALUES (?, ?, ?, ?)');
+    $stmt = db()->prepare(
+        'INSERT INTO usuarios (nombre, usuario, password_hash, rol, activo, debe_cambiar_password)
+         VALUES (?, ?, ?, ?, 0, 1)'
+    );
     $stmt->execute([$nombre, $nombre_usuario, password_hash($password, PASSWORD_DEFAULT), $rol]);
 
     $aviso = $generada
-        ? "Usuario «{$nombre_usuario}» creado. Contraseña generada: {$password} (anótala)."
-        : "Usuario «{$nombre_usuario}» creado.";
+        ? "Usuario «{$nombre_usuario}» creado. Contraseña generada: {$password} (anótala). En su primer ingreso deberá cambiarla."
+        : "Usuario «{$nombre_usuario}» creado. En su primer ingreso deberá cambiarla.";
     flash('ok', $aviso);
 }
 
