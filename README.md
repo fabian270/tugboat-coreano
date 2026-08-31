@@ -96,3 +96,10 @@ El progreso se guarda por usuario (aciertos, repasos y estado de cada ficha).
 
 - Tema: el botón ☀/☾ alterna oscuro/claro; se guarda en el navegador y en la cuenta del usuario.
 - En Windows, `docker compose` debe ejecutarse desde Docker Desktop.
+
+## Herramientas utilizadas
+
+Esta aplicación fue creada utilizando inteligencia artificial como asistente de desarrollo. Las herramientas utilizadas fueron:
+
+- **OpenCode** — agente de IA para terminal que interactúa con el código, ejecuta comandos, lee/escribe archivos y gestiona el flujo de trabajo
+- **Big Pickle** — modelo de IA principal que actuó como agente de codificación, generando y depurando todo el código del proyecto
